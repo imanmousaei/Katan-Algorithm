@@ -5,20 +5,18 @@ def process_input():
     return n, t, a
 
 def solve(n, t, a):
-    cnt, right_sum = 0, 0
+    cnt, overall_sum = 0, 0
 
     for right in range(0, n):
         left = 0
+        overall_sum += a[right]
 
-        right_sum += a[right]
-        sum = right_sum
-
-        while left <= right:
+        sum = overall_sum
+        for left in range(0, right+1):
             if sum < t:
                 cnt += 1
 
             sum -= a[left]
-            left += 1
 
     return cnt
 

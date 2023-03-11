@@ -1,48 +1,33 @@
-mn = []
-mx = []
+import numpy as np
+
 
 def process_input():
     first_line = list(map(int,input().strip().split()))
     n, d = first_line
     return n, d
 
-def find_min_max(a, l, r):
-    print(f'l = {l}, t = {r}')
-    if mn[l][r] != 0 and mx[l][r] != 0:
-        print(f'mn[{l}][{r}] = {mn[l][r]}, mx[{l}][{r}] = {mx[l][r]}')
-        return mn[l][r], mx[l][r]
-    
-    if l == r:
-        mn[l][l] = a[l]
-        mx[l][l] = a[l]
-        return a[l], a[l]
-    
-    mid = (l + r) // 2
-    mn1, mx1 = find_min_max(a, l, mid)
-    mn2, mx2 = find_min_max(a, mid+1, r)
+def find_min_diff(a, l, r):
+    sr = sorted(a[l:r+1])
 
-    mn[l][r] = min(mn1, mn2)
-    mx[l][r] = max(mx1, mx2)
-    
-    print(f'mn[{l}][{r}] = {mn[l][r]}, mx[{l}][{r}] = {mx[l][r]}')
-    return mn[l][r], mx[l][r]
+    min_diff = np.inf
+    for i in range(1, len(sr)):
+        min_diff = min(sr[i] - sr[i-1], min_diff)
+
+    return min_diff
 
 
 if __name__ == '__main__':
     n, d = process_input()
     a = list(map(int,input().strip().split()))
-    mn = [[0]*n]*n
-    mx = [[0]*n]*n
-    # find_min_max(a, 0, n-1)
+
     ans = []
 
-    find_min_max(a, 1, 2)
-
-    # for i in range(d):
-    #     l, r = process_input()
+    for i in range(d):
+        l, r = process_input()
         
-    #     lrmin, lrmax = find_min_max(a, l-1, r-1)
-    #     ans.append(lrmax - lrmin)
+        min_diff = find_min_diff(a, l-1, r-1)
 
-    # for answer in ans:
-    #     print(answer)
+        ans.append(min_diff)
+
+    for answer in ans:
+        print(answer)
