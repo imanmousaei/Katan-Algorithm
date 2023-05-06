@@ -5,7 +5,6 @@ def process_input():
     n = int(input())
     a = []
     b = []
-    hp = []
     tanks = []
 
     for i in range(n):
@@ -16,36 +15,81 @@ def process_input():
 
     return n, a, b, tanks
 
-verbose = True
+
 def printt(*values):
     if verbose:
         print(*values)
 
+
+def get_previous_index(idx):
+    prev = idx - 1
+    if prev == -1:
+        prev = n-1
+    return prev
+
+
+def get_after_index(idx):
+    return (idx+1) % n
+
+
+def solve_for_index(idx):
+    a = aa.copy()
+    b = bb.copy()
+
+    cnt = 1
+    rockets = a[idx]
+    printt(f'rockets = {rockets}')
+
+    while cnt < n:
+        printt('idx = ', idx)
+        cnt += 1
+        last_idx = idx
+        idx = (idx+1) % n
+
+        a[idx] -= b[last_idx]
+        if a[idx] < 0:
+            a[idx] = 0
+
+        rockets += a[idx]
+        printt(f'a = {a[idx]}, rockets = {rockets}')
+
+    return rockets
+
+
+def find_min(arr, key):
+    mn = float('inf')
+    idx = -1
+
+    for i, val in enumerate(arr):
+        k = key(val)
+        if k < mn:
+            mn = k
+            idx = i
+        elif k == mn and i < idx:
+            idx = i
+
+    return idx
+
+
 if __name__ == '__main__':
+    verbose = False
+
     t = int(input())
     for i in range(t):
 
-        n, a, b, tanks = process_input()
+        n, aa, bb, tanks = process_input()
 
-        tanks = sorted(tanks, key=lambda x: (x[0], -x[1])) # least a with most b
-        printt(tanks)
+        idx = find_min(tanks, key=lambda x: (x[0]-x[1]))
+        rockets1 = solve_for_index(idx)
 
-        idx = tanks[0][2]
-        cnt = 0
-        rockets = a[idx]
-        printt(f'rockets = {rockets}')
+        idx = find_min(tanks, key=lambda x: (-x[0]))
+        rockets2 = solve_for_index(idx)
 
-        while cnt < n-1:
-            printt('idx = ', idx)
-            cnt += 1
-            last_idx = idx
-            idx = (idx+1) % n
+        idx = find_min(tanks, key=lambda x: (x[1]))
+        rockets3 = solve_for_index(idx)
+        
+        idx = find_min(tanks, key=lambda x: (x[1]))
+        idx = get_after_index(idx)
+        rockets4 = solve_for_index(idx)
 
-            a[idx] -= b[last_idx]
-            if a[idx] < 0:
-                a[idx] = 0
-
-            rockets += a[idx]
-            printt(f'a = {a[idx]}, rockets = {rockets}')
-
-        print(rockets)
+        print(min(rockets1, rockets2, rockets3, rockets4))
