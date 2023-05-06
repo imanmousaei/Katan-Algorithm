@@ -6,19 +6,19 @@ def process_input():
     a = []
     b = []
     hp = []
-    heapq.heapify(hp)
+    tanks = []
     
     for i in range(n):
         aa, bb = list(map(int, input().strip().split()))
         a.append(aa)
         b.append(bb)
-        heapq.heappush(hp,  (aa,bb,i) )
+        tanks.append(  (aa,bb,i) )
 
-    return n, a, b, hp
+    return n, a, b, tanks
 
 
 if __name__ == '__main__':
     t = int(input())
     for i in range(t):
 
-        n, a, b, hp = process_input()
+        n, a, b, tanks = process_input()
