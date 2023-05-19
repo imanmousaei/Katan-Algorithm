@@ -1,7 +1,8 @@
 def process_input():
-    w, b, r = list(map(int, input().strip().split()))
+    n = int(input())
+    a = list(map(int, input().strip().split()))
 
-    return w, b, r
+    return n, a
 
 
 verbose = False
@@ -13,36 +14,28 @@ def printt(*values):
 
 
 if __name__ == '__main__':
-    w, b, r = process_input()
+    t = int(input())
 
-    cnt = 0
-    colors = [w, b, r]
+    for tt in range(t):
+        n, a = process_input()
 
-    while (sum(colors) > 0):
-        colors = sorted(colors, key=lambda x: -x)
-        printt(colors)
+        res = 0
+        mx = 0
+        s = 0
+        for i in range(n):
+            mx = max(mx, a[i])
+            s ^= a[i]
+            res = max(res, (s ^ mx))
 
-        x, y, z = colors
-        dif = min(x/2, y, x-y, y-z, (x-z)/2)
-        dif = int(dif)
+        for i in range(n):
+            mx = 0
+            s = 0
 
-        if x >= 2 and y >= 1:
-            dif = max(1, dif)
+            tah = n
+            
+            for j in range(i, tah):
+                mx = max(mx, a[j])
+                s ^= a[j]
+                res = max(res, (s ^ mx))
 
-        # forming dif shelves of xxy
-        cnt += dif
-        colors[0] -= 2*dif
-        colors[1] -= dif
-        # print(f'dif = {dif}, x = {x}')
-
-        if dif == 0:
-            # forming dif shelves of xyz
-            dif = min(colors)
-            printt('dif = 0, new dif = ', dif)
-            cnt += dif
-            colors[0] -= dif
-            colors[1] -= dif
-            colors[2] -= dif
-            break
-
-    print(cnt)
+        print(res)
