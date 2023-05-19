@@ -1,17 +1,14 @@
-def process_input():
-    n = int(input())
-    a = list(map(int, input().strip().split()))
-
-    return n, a
-
-
 verbose = False
-
 
 def printt(*values):
     if verbose:
         print(*values)
 
+def process_input():
+    n = int(input())
+    a = list(map(int, input().strip().split()))
+
+    return n, a
 
 if __name__ == '__main__':
     t = int(input())

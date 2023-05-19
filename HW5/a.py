@@ -1,49 +1,54 @@
+verbose = False
+
+
+def printt(*values):
+    if verbose:
+        print(*values)
+
 
 def process_input():
     n = int(input())
-    x = list(map(int, input().strip().split()))
-    q = int(input())
-    m = list(map(int, input().strip().split()))
+    s = input()
 
-    return n, x, q, m
-
-
-def check(l_sorted, x):
-    ans = 0
-    cnt = 0
-    for val in l_sorted:
-        if (val[0] > x):
-            cnt += 1
-        elif (val[1] >= x):
-            ans += x - val[0]
-            cnt += 1
-        if (cnt == (n+1)/2):
-            break
-
-    if (cnt < (n+1)/2):
-        return False
-    if (ans > s):
-        return False
-    return True
-
-
-def binary_search(l_sorted):
-    low = 1
-    high = 1e14
-    while low != high:
-        mid = (high + low + 1) // 2
-
-        if (check(l_sorted, mid)):
-            low = mid
-        else:
-            high = mid-1
-
-    return int(low)
+    return n, s
 
 
 if __name__ == '__main__':
-    n, x, q, m = process_input()
+    t = int(input())
 
+    for tt in range(t):
+        n, s = process_input()
+        sum = 0
+        all_sums = [0]
 
-    ans = binary_search(l_sorted)
-    print(ans)
+        for i in range(n):
+            if (s[i] == '('):
+                sum += 1
+            else:
+                sum -= 1
+
+            all_sums.append(sum)
+
+        all_sums = sorted(all_sums)
+
+        res = 0
+        ns = 0
+        for i in range(n+1):
+            res += i*all_sums[i]-ns  # |L-R|
+            res += i*(n-i+1)  # L+R
+            ns += all_sums[i]
+
+        res /= 2
+
+        stack = []
+        for i in range(n):
+            if (s[i] == '('):
+                stack.append(i)
+            else:
+                if (len(stack) == 0):
+                    continue
+
+                top = stack.pop()
+                res -= (top+1)*(n-i)  # X
+
+        print(int(res))
