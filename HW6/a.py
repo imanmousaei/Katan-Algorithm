@@ -1,5 +1,5 @@
-verbose = False
-# verbose = True
+# verbose = False
+verbose = True
 
 def printt(*values):
     if verbose:
