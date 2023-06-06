@@ -1,7 +1,3 @@
-6
-LRLRRLL
-L
-LLR
-RRRR
-LLLLLL
-R
+1
+0
+1
